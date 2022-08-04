@@ -17,6 +17,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 	const [modalIsOpen, setModalIsOpen] = React.useState(false);
 	const [contributionAmount, setContributionAmount] = React.useState(1000.00);
 
+	console.log(objective.contributions.map((c) => c.timestamp));
 	return (
 		<>
 			<Card withBorder shadow={'lg'} radius={'sm'}>
