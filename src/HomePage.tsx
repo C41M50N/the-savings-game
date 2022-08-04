@@ -1,6 +1,6 @@
 
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
-import React from 'react'
+import React, { BaseSyntheticEvent, ChangeEventHandler } from 'react'
 import { BuildingBank, MoonStars, Search, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import FeedItem from './components/FeedItem';
@@ -11,6 +11,13 @@ function HomePage() {
   const [colorScheme, setColorScheme] = React.useState<ColorScheme>("dark");
   const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   const dark = colorScheme === 'dark';
+
+  const [allObjectives, ] = React.useState(mockObjectives);
+
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
+  const searchedObjectives = React.useMemo(() => {
+    return allObjectives.filter((objective) => objective.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  }, [allObjectives, searchTerm])
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -30,7 +37,7 @@ function HomePage() {
                 <Title>The Savings Game</Title>
 
                 <div style={{ flex: 1, marginInline: 20, marginLeft: 56 }}>
-                  <Input icon={<Search/>} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                  <Input icon={<Search/>} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
                 </div>
 
                 <div style={{ marginInline: 20 }}>
@@ -66,7 +73,7 @@ function HomePage() {
 
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
-                  [...mockObjectives].map((objective) => (
+                  [...searchedObjectives].map((objective) => (
                     <ObjectiveCard key={objective.id} objective={objective} />
                   ))
                 }
