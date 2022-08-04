@@ -13,7 +13,7 @@ const FeedItem = ({ feedEntry }: Props) => {
         <Container>
             <Grid>
                 <Grid.Col span={2}>
-                    <UserCircle size={20} />
+                    <UserCircle size={30} />
                 </Grid.Col>
                 <Grid.Col span={10}>
                     <Title order={3}>{feedEntry.user}</Title>

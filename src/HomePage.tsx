@@ -76,7 +76,7 @@ function HomePage() {
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
               <Title order={2}>Social Feed</Title>
-
+              <br />
               <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
                 {
                   [...mockFeed].map((feed) => (
