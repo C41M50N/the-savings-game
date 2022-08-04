@@ -1,6 +1,6 @@
 
+import React from 'react'
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
-import React, { BaseSyntheticEvent, ChangeEventHandler } from 'react'
 import { BuildingBank, MoonStars, Search, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import FeedItem from './components/FeedItem';
@@ -86,8 +86,8 @@ function HomePage() {
               <br />
               <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
                 {
-                  [...mockFeed].map((feed) => (
-                    <FeedItem feedEntry={feed} />
+                  [...mockFeed].map((feed, i) => (
+                    <FeedItem key={i} feedEntry={feed} />
                   ))
                 }
               </Stack>

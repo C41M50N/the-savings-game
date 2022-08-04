@@ -35,7 +35,7 @@ const ObjectiveCard = ({ objective }: Props) => {
 			</Card.Section>
 
 			<Card.Section mt="sm">
-				<Image height={200} width={"100%"} src={''} withPlaceholder />
+				<Image height={200} width={"100%"} src={objective.image} withPlaceholder />
 			</Card.Section>
 
 			<Card.Section inheritPadding mt="sm" pb="md">

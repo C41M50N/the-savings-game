@@ -5,7 +5,7 @@ const mockObjectives: Objective[] = [
     {
         id: 1,
         title: 'New Bike',
-        image: '',
+        image: 'https://ep1.pinkbike.org/p5pb13009341/p5pb13009341.jpg',
         currentAmount: 30,
         goalAmount: 200,
         contributions: [
@@ -18,7 +18,7 @@ const mockObjectives: Objective[] = [
     {
         id: 2,
         title: 'New Car',
-        image: '',
+        image: 'https://www.supercars.net/blog/wp-content/uploads/2016/01/Screenshot-2016-01-07-09.42.09.png',
         currentAmount: 20_903.0,
         goalAmount: 30_000.0,
         contributions: [
@@ -39,7 +39,7 @@ const mockObjectives: Objective[] = [
     {
         id: 3,
         title: 'New Puppy',
-        image: '',
+        image: 'https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Fmobile%2F000%2F013%2F564%2Fdoge.jpg',
         currentAmount: 4_900.0,
         goalAmount: 5_000.0,
         contributions: [
