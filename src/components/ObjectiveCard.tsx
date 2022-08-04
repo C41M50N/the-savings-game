@@ -82,25 +82,29 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 				</Card.Section>
 			</Card>
 
-			<Modal opened={modalIsOpen} size='lg'
+			<Modal opened={modalIsOpen} size='lg' padding={50}
 				onClose={() => {
 					setModalIsOpen(false);
 					setContributionAmount(contributionAmount);
 					setInputWarningOn(false);
-				}} 
+				}}
 				title={<Text style={{ fontSize: 24, fontFamily: "'Press Start 2P', cursive" }}>Level Up !!!</Text>}>
+				
 				<Container style={{ paddingBottom: 20 }}>
 					<Text size={'lg'} color="#47f9ff">
 						Current Contribution Amount: ${objective.currentAmount}
 					</Text>
-					<Text size={'lg'} color='#ff9f2d'>
+					<Text size={'lg'} color='#6e70f4'>
 						Goal Contribution Amount: ${objective.goalAmount}
 					</Text>
-					<Text size={'lg'} color='red'>
+					<Text size={'lg'} color='#ff3980b4'>
 						Contribution Needed: ${neededContribution}
 					</Text>
 				</Container>
-				<div style={{ display: 'flex' }}>
+
+				<Divider size={'md'} />
+
+				<div style={{ display: 'flex', paddingTop: '15px' }}>
 					<Container>
 						<NumberInput
 							label="Contribution Amount"
