@@ -78,7 +78,7 @@ const Profile = ({ user }: Props) => {
                     </Button>
                 </Grid.Col>
             </Grid>
-            <Collapse in={opened} style={{ border: "2px solid gray", padding: "15px", marginTop: "10px" }}>
+            <Collapse in={opened} style={{ border: "2px solid gray", borderRadius: 10, padding: "15px", marginTop: "10px" }}>
                 <Grid style={{ paddingBottom: 15 }}>
                     <Grid.Col span={3}>
                         <Avatar radius="xl" src={user.avatar != "" ? user.avatar : null} alt="no image here" />
