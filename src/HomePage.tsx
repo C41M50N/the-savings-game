@@ -71,6 +71,8 @@ function HomePage() {
             <Container style={{ height: '88vh', width: '70%' }}>
               <Title order={2}>Savings Objectives</Title>
 
+              <Divider />
+
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
                   [...searchedObjectives].map((objective) => (
@@ -83,6 +85,7 @@ function HomePage() {
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
               <Title order={2}>Social Feed</Title>
+              <Divider />
               <br />
               <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
                 {
