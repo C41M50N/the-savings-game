@@ -1,10 +1,11 @@
 
 import React from 'react'
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
-import { BuildingBank, MoonStars, Search, Sun } from 'tabler-icons-react';
+import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
-import FeedItem from './components/FeedItem';
-import { mockFeed, mockObjectives } from './data';
+import SocialFeed from './components/SocialFeed';
+import Profile from './components/Profile';
+import { mockFeed, mockObjectives, mockUser } from './data';
 
 function HomePage() {
 
@@ -12,7 +13,7 @@ function HomePage() {
   const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   const dark = colorScheme === 'dark';
 
-  const [allObjectives, ] = React.useState(mockObjectives);
+  const [allObjectives,] = React.useState(mockObjectives);
 
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const searchedObjectives = React.useMemo(() => {
@@ -37,12 +38,12 @@ function HomePage() {
                 <Title>The Savings Game</Title>
 
                 <div style={{ flex: 1, marginInline: 20, marginLeft: 56 }}>
-                  <Input icon={<Search/>} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                  <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
                 </div>
 
                 <div style={{ marginInline: 20 }}>
                   <ActionIcon>
-                    <Avatar size={42} src={null} alt="Profile" color={"blue"} />
+                    <Avatar size={42} src={mockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
                   </ActionIcon>
                 </div>
 
@@ -70,7 +71,6 @@ function HomePage() {
             {/* SAVINGS OBJECTIVES VIEWPORT */}
             <Container style={{ height: '88vh', width: '70%' }}>
               <Title order={2}>Savings Objectives</Title>
-
               <Divider />
 
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
@@ -84,16 +84,9 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Title order={2}>Social Feed</Title>
-              <Divider />
+              <Profile user={mockUser} />
               <br />
-              <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
-                {
-                  [...mockFeed].map((feed, i) => (
-                    <FeedItem key={i} feedEntry={feed} />
-                  ))
-                }
-              </Stack>
+              <SocialFeed feedEntryList={mockFeed} />
             </Container>
           </Group>
 

@@ -1,5 +1,5 @@
 
-import { FeedEntry, Objective } from "./types";
+import { FeedEntry, Objective, User } from "./types";
 
 const mockObjectives: Objective[] = [
     {
@@ -104,4 +104,10 @@ const mockFeed: FeedEntry[] = [
     }
 ]
 
-export { mockObjectives, mockFeed }
+const mockUser: User = {
+    name: "John Smith",
+    avatar: "https://play-lh.googleusercontent.com/XVHP0sBKrRJYZq_dB1RalwSmx5TcYYRRfYMFO18jgNAnxHAIA1osxM55XHYTb3LpkV8",
+    objectives: mockObjectives
+}
+
+export { mockObjectives, mockFeed, mockUser }

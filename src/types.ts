@@ -21,3 +21,11 @@ type FeedEntry = {
 }
 
 export { type FeedEntry }
+
+type User = {
+    name: string
+    avatar: string
+    objectives: Objective[]
+}
+
+export { type User }
