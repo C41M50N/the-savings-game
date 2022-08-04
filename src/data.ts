@@ -56,6 +56,40 @@ const mockObjectives: Objective[] = [
                 timestamp: new Date()
             }
         ]
+    },
+    {
+        id: 4,
+        title: 'New Laptop',
+        image: 'https://www.apple.com/v/macbook-pro-14-and-16/b/images/overview/hero/intro__ewz1ro7xs14y_large.jpg',
+        currentAmount: 550.00,
+        goalAmount: 4_899.00,
+        contributions: [
+            {
+                amount: 200.00,
+                timestamp: new Date()
+            },
+            {
+                amount: 350.00,
+                timestamp: new Date()
+            }
+        ]
+    },
+    {
+        id: 5,
+        title: 'Paris Trip',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1200px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg',
+        currentAmount: 1_700.00,
+        goalAmount: 8_200.00,
+        contributions: [
+            {
+                amount: 1_000.00,
+                timestamp: new Date()
+            },
+            {
+                amount: 700.00,
+                timestamp: new Date()
+            }
+        ]
     }
 ]
 
