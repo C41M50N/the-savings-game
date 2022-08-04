@@ -12,6 +12,7 @@ const ObjectiveCard = ({ objective }: Props) => {
 
 	const progressPercentage = Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0));
 
+	console.log(objective.contributions.map((c) => c.timestamp));
 	return (
 		<Card withBorder shadow={'lg'} radius={'sm'}>
 			<Card.Section>

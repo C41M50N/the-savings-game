@@ -1,6 +1,7 @@
 
 import { FeedEntry, Objective, User } from "./types";
 
+// note month in date is indexed from 0, 8 -> Sept etc.
 const mockObjectives: Objective[] = [
     {
         id: 1,
@@ -24,7 +25,7 @@ const mockObjectives: Objective[] = [
         contributions: [
             {
                 amount: 2_000.0,
-                timestamp: new Date()
+                timestamp: new Date(2020, 8, 3)
             },
             {
                 amount: 10_000.0,
@@ -45,7 +46,7 @@ const mockObjectives: Objective[] = [
         contributions: [
             {
                 amount: 1_000.0,
-                timestamp: new Date()
+                timestamp: new Date(2020, 8, 3)
             },
             {
                 amount: 3_000.0,
@@ -53,7 +54,7 @@ const mockObjectives: Objective[] = [
             },
             {
                 amount: 900.0,
-                timestamp: new Date()
+                timestamp: new Date(2022, 11, 3)
             }
         ]
     }
