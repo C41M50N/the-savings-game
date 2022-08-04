@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Title, Text, Grid } from '@mantine/core'
+import { Container, Title, Text, Grid, Divider } from '@mantine/core'
 import { UserCircle } from 'tabler-icons-react'
 import { FeedEntry } from '../types'
 
@@ -20,6 +20,7 @@ const FeedItem = ({ feedEntry }: Props) => {
                 </Grid.Col>
             </Grid>
             <Text size="md">{feedEntry.feedMessage}</Text>
+            <Divider size="md"/>
         </Container>
     );
 }
