@@ -10,12 +10,12 @@ type Props = {
 const FeedItem = ({ feedEntry }: Props) => {
 
     return (
-        <Container>
+        <Container style={{ width: '100%' }}>
             <Grid>
-                <Grid.Col span={2}>
+                <Grid.Col span={1}>
                     <UserCircle size={30} />
                 </Grid.Col>
-                <Grid.Col span={10}>
+                <Grid.Col span={4}>
                     <Title order={3}>{feedEntry.user}</Title>
                 </Grid.Col>
             </Grid>
