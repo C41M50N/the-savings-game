@@ -3,14 +3,16 @@ import React from 'react'
 import { ActionIcon, Card, Group, Menu, Title, Image, Progress, Text, DefaultMantineColor, Modal, Container, NumberInput, Button, Divider, Space, Grid, Blockquote } from '@mantine/core'
 import { Objective } from '../types'
 import { IconDots, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons'
+import { clamp } from '../utils'
 
 type Props = {
-	objective: Objective
+	objective: Objective,
+	addContribution: (id: number, amount: number) => void
 }
 
-const ObjectiveCard = ({ objective }: Props) => {
+const ObjectiveCard = ({ objective, addContribution }: Props) => {
 
-	const progressPercentage = Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0));
+	const progressPercentage = clamp(Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0)), 0.0, 100.0);
 
 	const [modalIsOpen, setModalIsOpen] = React.useState(false);
 	const [contributionAmount, setContributionAmount] = React.useState(1000.00);
@@ -56,6 +58,10 @@ const ObjectiveCard = ({ objective }: Props) => {
 							(progressPercentage < 100.0 && progressPercentage >= 90.0) &&
 							<ProgressBar value={progressPercentage} color={"green"} />
 						}
+						{
+							(progressPercentage === 100.0) &&
+							<ProgressBar value={progressPercentage} color={"yellow"} />
+						}
 
 						<Text style={{ fontSize: 30, fontWeight: 'normal', paddingLeft: 10, fontFamily: "'Press Start 2P', cursive" }}>
 							{progressPercentage.toFixed(0)}%
@@ -86,7 +92,10 @@ const ObjectiveCard = ({ objective }: Props) => {
 							onChange={(amount) => setContributionAmount(amount!)}
 						/>
 
-						<Button variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
+						<Button onClick={() => {
+							addContribution(objective.id, contributionAmount);
+							setModalIsOpen(false);
+						}} variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
 					</Container>
 
 					<Container>

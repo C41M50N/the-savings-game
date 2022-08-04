@@ -6,6 +6,7 @@ import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
 import Profile from './components/Profile';
 import { mockFeed, mockObjectives, mockUser } from './data';
+import produce from 'immer';
 
 function HomePage() {
 
@@ -13,7 +14,20 @@ function HomePage() {
   const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   const dark = colorScheme === 'dark';
 
-  const [allObjectives,] = React.useState(mockObjectives);
+  const [allObjectives, setAllObjectives] = React.useState(mockObjectives);
+
+  const addContribution = React.useCallback ((id: number, amount: number) => {
+    setAllObjectives(
+      produce((draft) => {
+        const objective = draft.find((objective) => objective.id === id)!;
+        objective.currentAmount = objective?.currentAmount + amount;
+        objective.contributions.push({
+          amount: amount,
+          timestamp: new Date()
+        })
+      })
+    )
+  }, [])
 
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const searchedObjectives = React.useMemo(() => {
@@ -76,7 +90,7 @@ function HomePage() {
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
                   [...searchedObjectives].map((objective) => (
-                    <ObjectiveCard key={objective.id} objective={objective} />
+                    <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} />
                   ))
                 }
               </SimpleGrid>
