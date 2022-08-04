@@ -36,7 +36,7 @@ function HomePage() {
 
                 <div style={{ marginInline: 20 }}>
                   <ActionIcon>
-                    <Avatar size={42} src={null} alt="Profile" color={"blue"} />
+                    <Avatar size={42} src={mockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
                   </ActionIcon>
                 </div>
 

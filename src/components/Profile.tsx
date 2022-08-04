@@ -28,7 +28,7 @@ const Profile = ({ user }: Props) => {
             <Collapse in={opened} style={{ border: "2px solid gray", padding: "15px", marginTop: "10px" }}>
                 <Grid style={{ paddingBottom: 15 }}>
                     <Grid.Col span={3}>
-                        <Avatar radius="lg" src={user.avatar != "" ? user.avatar : null} alt="no image here" />
+                        <Avatar radius="xl" src={user.avatar != "" ? user.avatar : null} alt="no image here" />
                     </Grid.Col>
                     <Grid.Col span={9}>
                         <Title order={3}>{user.name}</Title>
