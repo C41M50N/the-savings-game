@@ -1,9 +1,10 @@
 
-import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text } from '@mantine/core'
+import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
 import React from 'react'
 import { BuildingBank, MoonStars, Search, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
-import { mockObjectives } from './data';
+import FeedItem from './components/FeedItem';
+import { mockFeed, mockObjectives } from './data';
 
 function HomePage() {
 
@@ -60,7 +61,7 @@ function HomePage() {
 
           <Group spacing={"xs"} style={{ width: '100%' }}>
             {/* SAVINGS OBJECTIVES VIEWPORT */}
-            <Container style={{ height: '88vh', width: '80%' }}>
+            <Container style={{ height: '88vh', width: '70%' }}>
               <Title order={2}>Savings Objectives</Title>
 
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
@@ -73,9 +74,16 @@ function HomePage() {
             </Container>
 
             {/* FEED VIEWPORT */}
-            <Container style={{ height: '88vh', width: '20%', flex: 1 }}>
+            <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
               <Title order={2}>Social Feed</Title>
-
+              <br />
+              <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
+                {
+                  [...mockFeed].map((feed) => (
+                    <FeedItem feedEntry={feed} />
+                  ))
+                }
+              </Stack>
             </Container>
           </Group>
 
