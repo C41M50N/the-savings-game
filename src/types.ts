@@ -16,6 +16,7 @@ type Objective = {
 export { type Objective }
 
 type FeedEntry = {
+    id: number
     user: string
     feedMessage: string
 }

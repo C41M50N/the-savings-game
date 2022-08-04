@@ -21,7 +21,6 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 
 	function updateAmount(amt: number) {
 		if(amt > 0 && amt <= neededContribution) {
-			console.log(amt);
 			setContributionAmount(amt);
 			setInputWarningOn(false);
 		} else {

@@ -96,10 +96,12 @@ const mockObjectives: Objective[] = [
 
 const mockFeed: FeedEntry[] = [
     {
+        id: 1,
         user: "John Smith",
         feedMessage: "Achieved 25% for the new bike objective."
     },
     {
+        id: 2,
         user: "Jane Smith",
         feedMessage: "Achieved 90% for the new baking kit objective. Almost there!"
     }

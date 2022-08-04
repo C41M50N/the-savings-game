@@ -29,7 +29,7 @@ const SocialFeed = ({ feedEntryList }: Props) => {
 				<Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
 					{
 						[...feedEntryList].map((feed) => (
-							<FeedItem feedEntry={feed} />
+							<FeedItem key={feed.id} feedEntry={feed} />
 						))
 					}
 				</Stack>
