@@ -14,3 +14,10 @@ type Objective = {
     contributions: Contribution[]
 }
 export { type Objective }
+
+type FeedEntry = {
+    user: string
+    feedMessage: string
+}
+
+export { type FeedEntry }

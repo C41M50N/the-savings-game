@@ -1,5 +1,5 @@
 
-import { Objective } from "./types";
+import { FeedEntry, Objective } from "./types";
 
 const mockObjectives: Objective[] = [
     {
@@ -59,4 +59,15 @@ const mockObjectives: Objective[] = [
     }
 ]
 
-export { mockObjectives }
+const mockFeed: FeedEntry[] = [
+    {
+        user: "John Smith",
+        feedMessage: "Achieved 25% for the new bike objective."
+    },
+    {
+        user: "Jane Smith",
+        feedMessage: "Achieved 90% for the new baking kit objective. Almost there!"
+    }
+]
+
+export { mockObjectives, mockFeed }
