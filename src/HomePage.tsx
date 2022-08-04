@@ -4,7 +4,8 @@ import React from 'react'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
-import { mockFeed, mockObjectives } from './data';
+import Profile from './components/Profile';
+import { mockFeed, mockObjectives, mockUser } from './data';
 
 function HomePage() {
 
@@ -75,6 +76,7 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
+              <Profile user={mockUser}/>
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
           </Group>
