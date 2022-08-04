@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import { ActionIcon, Card, Group, Menu, Title, Image, Progress, Text, DefaultMantineColor, Modal, Container, NumberInput, Button, Divider, Space, Grid, Blockquote } from '@mantine/core'
 import { Objective } from '../types'
 import { IconDots, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons'
@@ -14,10 +14,21 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 
 	const progressPercentage = clamp(Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0)), 0.0, 100.0);
 
-	const [modalIsOpen, setModalIsOpen] = React.useState(false);
-	const [contributionAmount, setContributionAmount] = React.useState(1000.00);
+	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const [neededContribution, setNeededContribution] = useState(Math.round((objective.goalAmount - objective.currentAmount) * 100) / 100);
+	const [contributionAmount, setContributionAmount] = useState(neededContribution);
+	const [inputWarningOn, setInputWarningOn] = useState(false);
 
-	console.log(objective.contributions.map((c) => c.timestamp));
+	function updateAmount(amt: number) {
+		if(amt > 0 && amt <= neededContribution) {
+			console.log(amt);
+			setContributionAmount(amt);
+			setInputWarningOn(false);
+		} else {
+			setInputWarningOn(true);
+		}
+	}
+
 	return (
 		<>
 			<Card withBorder shadow={'lg'} radius={'sm'}>
@@ -33,7 +44,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							</Menu.Target>
 
 							<Menu.Dropdown>
-								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => setModalIsOpen(true)}>Contribute</Menu.Item>
+								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => { setModalIsOpen(true); setContributionAmount(contributionAmount); }}>Contribute</Menu.Item>
 								<Menu.Item icon={<IconEdit size={20} />} color="orange">Edit</Menu.Item>
 								<Menu.Item icon={<IconTrash size={20} />} color="red">Delete</Menu.Item>
 							</Menu.Dropdown>
@@ -71,16 +82,38 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 				</Card.Section>
 			</Card>
 
-			<Modal opened={modalIsOpen} onClose={() => setModalIsOpen(false)} size='lg' title={<Text style={{ fontSize: 24, fontFamily: "'Press Start 2P', cursive" }}>Level Up !!!</Text>}>
-				<div style={{ display: 'flex' }}>
+			<Modal opened={modalIsOpen} size='lg' padding={50}
+				onClose={() => {
+					setModalIsOpen(false);
+					setContributionAmount(contributionAmount);
+					setInputWarningOn(false);
+				}}
+				title={<Text style={{ fontSize: 24, fontFamily: "'Press Start 2P', cursive" }}>Level Up !!!</Text>}>
+				
+				<Container style={{ paddingBottom: 20 }}>
+					<Text size={'lg'} color="#47f9ff">
+						Current Contribution Amount: ${objective.currentAmount}
+					</Text>
+					<Text size={'lg'} color='#6e70f4'>
+						Goal Contribution Amount: ${objective.goalAmount}
+					</Text>
+					<Text size={'lg'} color='#ff3980b4'>
+						Contribution Needed: ${neededContribution}
+					</Text>
+				</Container>
+
+				<Divider size={'md'} />
+
+				<div style={{ display: 'flex', paddingTop: '15px' }}>
 					<Container>
 						<NumberInput
 							label="Contribution Amount"
 							size='lg'
-							defaultValue={1000.00}
+							defaultValue={contributionAmount}
 							precision={2}
 							step={20}
 							min={1}
+							max={neededContribution}
 							parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
 							formatter={(value) =>
 								!Number.isNaN(parseFloat(value!))
@@ -90,12 +123,17 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							stepHoldDelay={500}
 							stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
 
-							onChange={(amount) => setContributionAmount(amount!)}
+							onChange={(value) => updateAmount(value!)}
 						/>
+
+						<Text size="md" color="red" style={ inputWarningOn ? { visibility: "visible" } : { visibility: "hidden" }}>
+							<i>Invalid contribution input.</i>
+						</Text>
 
 						<Button onClick={() => {
 							addContribution(objective.id, contributionAmount);
 							setModalIsOpen(false);
+
 						}} variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
 					</Container>
 
