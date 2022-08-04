@@ -15,11 +15,13 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 	const progressPercentage = clamp(Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0)), 0.0, 100.0);
 
 	const [modalIsOpen, setModalIsOpen] = useState(false);
-	const [contributionAmount, setContributionAmount] = useState(objective.goalAmount - objective.currentAmount);
+	const [neededContribution, setNeededContribution] = useState(Math.round((objective.goalAmount - objective.currentAmount) * 100) / 100);
+	const [contributionAmount, setContributionAmount] = useState(neededContribution);
 	const [inputWarningOn, setInputWarningOn] = useState(false);
 
 	function updateAmount(amt: number) {
-		if(amt > 0 && amt <= contributionAmount) {
+		if(amt > 0 && amt <= neededContribution) {
+			console.log(amt);
 			setContributionAmount(amt);
 			setInputWarningOn(false);
 		} else {
@@ -42,7 +44,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							</Menu.Target>
 
 							<Menu.Dropdown>
-								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => { setModalIsOpen(true); setContributionAmount(objective.goalAmount - objective.currentAmount); }}>Contribute</Menu.Item>
+								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => { setModalIsOpen(true); setContributionAmount(contributionAmount); }}>Contribute</Menu.Item>
 								<Menu.Item icon={<IconEdit size={20} />} color="orange">Edit</Menu.Item>
 								<Menu.Item icon={<IconTrash size={20} />} color="red">Delete</Menu.Item>
 							</Menu.Dropdown>
@@ -83,7 +85,8 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 			<Modal opened={modalIsOpen} size='lg'
 				onClose={() => {
 					setModalIsOpen(false);
-					setContributionAmount(objective.goalAmount - objective.currentAmount);
+					setContributionAmount(contributionAmount);
+					setInputWarningOn(false);
 				}} 
 				title={<Text style={{ fontSize: 24, fontFamily: "'Press Start 2P', cursive" }}>Level Up !!!</Text>}>
 				<Container style={{ paddingBottom: 20 }}>
@@ -94,7 +97,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 						Goal Contribution Amount: ${objective.goalAmount}
 					</Text>
 					<Text size={'lg'} color='red'>
-						Contribution Needed: ${objective.goalAmount - objective.currentAmount}
+						Contribution Needed: ${neededContribution}
 					</Text>
 				</Container>
 				<div style={{ display: 'flex' }}>
@@ -106,7 +109,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							precision={2}
 							step={20}
 							min={1}
-							max={objective.goalAmount - objective.currentAmount}
+							max={neededContribution}
 							parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
 							formatter={(value) =>
 								!Number.isNaN(parseFloat(value!))
@@ -116,7 +119,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							stepHoldDelay={500}
 							stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
 
-							onChange={(amount) => updateAmount(amount!)}
+							onChange={(value) => updateAmount(value!)}
 						/>
 
 						<Text size="md" color="red" style={ inputWarningOn ? { visibility: "visible" } : { visibility: "hidden" }}>
