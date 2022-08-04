@@ -39,21 +39,21 @@ const ObjectiveCard = ({ objective }: Props) => {
 			</Card.Section>
 
 			<Card.Section inheritPadding mt="sm" pb="md">
-				<div style={{ display: 'flex', alignItems: 'baseline' }}>
+				<div style={{ display: 'flex', alignItems: 'center' }}>
 					{
-						(progressPercentage < 30.0 && progressPercentage >= 0.0) &&
+						(progressPercentage < 40.0 && progressPercentage >= 0.0) &&
 						<ProgressBar value={progressPercentage} color={"red"} />
 					}
 					{
-						(progressPercentage < 60.0 && progressPercentage >= 30.0) &&
+						(progressPercentage < 90.0 && progressPercentage >= 40.0) &&
 						<ProgressBar value={progressPercentage} color={"blue"} />
 					}
 					{
-						(progressPercentage < 100.0 && progressPercentage >= 60.0) &&
+						(progressPercentage < 100.0 && progressPercentage >= 90.0) &&
 						<ProgressBar value={progressPercentage} color={"green"} />
 					}
 
-					<Text style={{ fontSize: 30, fontWeight: 'bold', paddingLeft: 10 }}>
+					<Text style={{ fontSize: 30, fontWeight: 'bold', paddingLeft: 10, fontFamily: "'Press Start 2P', cursive" }}>
 						{progressPercentage.toFixed(0)}%
 					</Text>
 				</div>
@@ -68,7 +68,7 @@ type ProgressBarProps = {
 }
 const ProgressBar = ({ value, color }: ProgressBarProps) => {
 	return (
-		<Progress value={value} color={color} size="xl" animate style={{ width: '90%' }} />
+		<Progress value={value} color={color} size="xl" animate style={{ width: '90%', height: 24 }} />
 	)
 }
 
