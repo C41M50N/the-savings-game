@@ -24,7 +24,7 @@ const SocialFeed = ({ feedEntryList }: Props) => {
                 </Grid.Col>
             </Grid>
             <br />
-            <Collapse in={opened}>
+            <Collapse in={opened} style={{ border: "2px solid gray", padding: "15px", marginTop: "10px", marginBottom: 0, paddingBottom: 0}}>
                 <Stack sx={(theme) => ({ backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0], height: 300 })}>
                 {
                     [...feedEntryList].map((feed) => (
