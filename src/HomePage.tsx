@@ -65,8 +65,8 @@ function HomePage() {
 
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
-                  [...mockObjectives].map((objective, i) => (
-                    <ObjectiveCard key={i} objective={objective} />
+                  [...mockObjectives].map((objective) => (
+                    <ObjectiveCard key={objective.id} objective={objective} />
                   ))
                 }
               </SimpleGrid>
