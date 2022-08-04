@@ -1,17 +1,38 @@
 
-import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
 import React from 'react'
+import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
 import Profile from './components/Profile';
 import { mockFeed, mockObjectives, mockUser } from './data';
+import produce from 'immer';
 
 function HomePage() {
 
   const [colorScheme, setColorScheme] = React.useState<ColorScheme>("dark");
   const toggleColorScheme = (value?: ColorScheme) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   const dark = colorScheme === 'dark';
+
+  const [allObjectives, setAllObjectives] = React.useState(mockObjectives);
+
+  const addContribution = React.useCallback ((id: number, amount: number) => {
+    setAllObjectives(
+      produce((draft) => {
+        const objective = draft.find((objective) => objective.id === id)!;
+        objective.currentAmount = objective?.currentAmount + amount;
+        objective.contributions.push({
+          amount: amount,
+          timestamp: new Date()
+        })
+      })
+    )
+  }, [])
+
+  const [searchTerm, setSearchTerm] = React.useState<string>("");
+  const searchedObjectives = React.useMemo(() => {
+    return allObjectives.filter((objective) => objective.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  }, [allObjectives, searchTerm])
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -31,7 +52,7 @@ function HomePage() {
                 <Title>The Savings Game</Title>
 
                 <div style={{ flex: 1, marginInline: 20, marginLeft: 56 }}>
-                  <Input icon={<Search/>} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                  <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
                 </div>
 
                 <div style={{ marginInline: 20 }}>
@@ -64,11 +85,12 @@ function HomePage() {
             {/* SAVINGS OBJECTIVES VIEWPORT */}
             <Container style={{ height: '88vh', width: '70%' }}>
               <Title order={2}>Savings Objectives</Title>
-              
+              <Divider />
+
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
-                  [...mockObjectives].map((objective) => (
-                    <ObjectiveCard key={objective.id} objective={objective} />
+                  [...searchedObjectives].map((objective) => (
+                    <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} />
                   ))
                 }
               </SimpleGrid>
@@ -76,7 +98,7 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Profile user={mockUser}/>
+              <Profile user={mockUser} />
               <br />
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
