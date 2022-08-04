@@ -53,7 +53,7 @@ const ObjectiveCard = ({ objective }: Props) => {
 						<ProgressBar value={progressPercentage} color={"green"} />
 					}
 
-					<Text style={{ fontSize: 30, fontWeight: 'bold', paddingLeft: 10, fontFamily: "'Press Start 2P', cursive" }}>
+					<Text style={{ fontSize: 30, fontWeight: 'normal', paddingLeft: 10, fontFamily: "'Press Start 2P', cursive" }}>
 						{progressPercentage.toFixed(0)}%
 					</Text>
 				</div>
