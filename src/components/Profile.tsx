@@ -32,7 +32,6 @@ const Profile = ({ user }: Props) => {
 
     useEffect(() => {
         redefineFields();
-        // console.log(totalCurrentAmount);
     }, []);
 
     function computeAchievementData() {
