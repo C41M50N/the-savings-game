@@ -14,7 +14,7 @@ const FeedItem = ({ feedEntry }: Props) => {
     return (
         <Container style={{ width: '100%' }}>
             <Grid>
-                <Grid.Col span={2}>
+                <Grid.Col span={1}>
                     <UserCircle size={30} />
                 </Grid.Col>
                 <Grid.Col span={10}>

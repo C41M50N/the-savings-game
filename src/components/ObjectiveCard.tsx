@@ -5,6 +5,7 @@ import { Objective } from '../types'
 import { IconDots, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons'
 import { clamp } from '../utils'
 import '../app.css'
+import { showNotification } from '@mantine/notifications'
 
 type Props = {
 	objective: Objective,
@@ -32,12 +33,27 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 		}
 	}
 
+	const performMilestoneChecks = () => {
+		const milestones = getNewMilestones(progressPercentage, clamp(Number.parseFloat(((objective.currentAmount + contributionAmount) / objective.goalAmount * 100).toFixed(0)), 0.0, 100.0));
+		console.log(milestones)
+		if (milestones.length !== 0) {
+			for (let i = 0; i < milestones.length; i++) {
+				let percentString = `${milestones[i].toString()}0%`
+				showNotification({
+					title: '💪 New Milestone Reached',
+					message: `${percentString} milestone reached for ${objective.title}!!!`,
+					autoClose: 2000
+				})
+			}
+		}
+	}
+
 	return (
 		<>
 			<Card withBorder shadow={'lg'} radius={'sm'}>
 				<Card.Section>
 					<Group position='apart'>
-						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6 }} className='keyword'>{objective.title}</Title>
+						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6, maxWidth: '81%' }} className='keyword'>{objective.title}</Title>
 
 						<Menu withinPortal position="right-start" shadow="md">
 							<Menu.Target>
@@ -67,7 +83,7 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 						}
 						{
 							(progressPercentage < 90.0 && progressPercentage >= 40.0) &&
-							<ProgressBar value={progressPercentage} color={"blue"} />
+							<ProgressBar value={progressPercentage} color={"orange"} />
 						}
 						{
 							(progressPercentage < 100.0 && progressPercentage >= 90.0) &&
@@ -134,6 +150,7 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 						</Text>
 
 						<Button onClick={() => {
+							performMilestoneChecks();
 							addContribution(objective.id, contributionAmount);
 							setContributeModalOpen(false);
 						}} variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
@@ -167,6 +184,18 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 			</Modal>
 		</>
 	)
+}
+
+const getNewMilestones = (previousProgressPercentage: number, newProgressPercentage: number) => {
+	let progressPercentage = previousProgressPercentage;
+
+	let milestoneArray: number[] = []
+	while (progressPercentage + 10.0 <= newProgressPercentage) {
+		milestoneArray.push(parseInt((progressPercentage + 10.0).toString()[0]))
+		progressPercentage = progressPercentage + 10.0;
+	}
+
+	return milestoneArray;
 }
 
 type ProgressBarProps = {
