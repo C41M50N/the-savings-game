@@ -7,10 +7,11 @@ import '../app.css'
 
 type Props = {
 	user: User
+    addedObjectiveCount: number
 }
 
-const Profile = ({ user }: Props) => {
-    const [objectives, setObjectives] = useState(user.objectives);
+const Profile = ({ user, addedObjectiveCount }: Props) => {
+    const [objectives, setObjectives] = useState(addedObjectiveCount);
     const [opened, setOpened] = useState(true);
     var totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
     var totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
@@ -87,7 +88,7 @@ const Profile = ({ user }: Props) => {
         totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
         overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
         totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
-    }, [...objectives.map(objective => objective.contributions.length)])
+    }, [objectives])
 
     return (
         <Container>

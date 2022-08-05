@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
@@ -15,8 +15,10 @@ function HomePage() {
   const dark = colorScheme === 'dark';
 
   const [allObjectives, setAllObjectives] = React.useState(mockObjectives);
+  const [addedObjectiveCount, setAddedObjectiveCount] = useState(0);
 
   const addContribution = React.useCallback ((id: number, amount: number) => {
+    setAddedObjectiveCount(addedObjectiveCount + 1);
     setAllObjectives(
       produce((draft) => {
         const objective = draft.find((objective) => objective.id === id)!;
@@ -107,7 +109,7 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Profile user={mockUser}/>
+              <Profile user={mockUser} addedObjectiveCount={addedObjectiveCount}/>
               <br />
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
