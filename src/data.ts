@@ -109,7 +109,7 @@ const mockFeed: FeedEntry[] = [
 
 const mockUser: User = {
     name: "John Smith",
-    avatar: "https://play-lh.googleusercontent.com/XVHP0sBKrRJYZq_dB1RalwSmx5TcYYRRfYMFO18jgNAnxHAIA1osxM55XHYTb3LpkV8",
+    avatar: "https://img.favpng.com/5/2/3/computer-icons-scalable-vector-graphics-avatar-emoticon-png-favpng-209NAXaV1ZBQdYGrU7nNbMxpX.jpg",
     objectives: mockObjectives
 }
 

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Container, Title, Text, Grid, Stack, Button, Collapse, Avatar, Divider, Progress } from '@mantine/core'
 import { CaretLeft, CaretDown, UserCircle } from 'tabler-icons-react'
 import { User } from '../types'
+import '../app.css'
 
 type Props = {
 	user: User
@@ -66,11 +67,23 @@ const Profile = ({ user }: Props) => {
         };
     }
 
+    function getColor() {
+        if (overallProgressPercent < 40.0) {
+            return "red";
+        } else if (overallProgressPercent < 90) {
+            return "blue";
+        } else if (overallProgressPercent !== 100.0) {
+            return "green";
+        } else {
+            return "yellow";
+        }
+    }
+
     return (
         <Container>
             <Grid>
                 <Grid.Col span={9}>
-                    <Title order={2}>Profile</Title>
+                    <Title order={2} className="title">Profile</Title>
                 </Grid.Col>
                 <Grid.Col span={3}>
                     <Button variant='default' onClick={() => setOpened((o) => !o)}>
@@ -81,57 +94,57 @@ const Profile = ({ user }: Props) => {
             <Collapse in={opened} style={{ border: "2px solid gray", borderRadius: 10, padding: "15px", marginTop: "10px" }}>
                 <Grid style={{ paddingBottom: 15 }}>
                     <Grid.Col span={3}>
-                        <Avatar radius="xl" src={user.avatar != "" ? user.avatar : null} alt="no image here" />
+                        <Avatar radius="xl" src={user.avatar} />
                     </Grid.Col>
                     <Grid.Col span={9}>
-                        <Title order={3}>{user.name}</Title>
+                        <Title order={3} className="title">{user.name}</Title>
                     </Grid.Col>
                 </Grid>
                 <Divider size="md" />
                 <Container px={0} style={{ paddingTop: "10px", paddingBottom: "15px", textAlign: "center" }}>
-                    <Title order={4} align={'center'}>
-                        <u>OBJECTIVE STAT</u>
+                    <Title order={4} align={'center'} className="subtitle">
+                        OBJECTIVE STAT
                     </Title>
                     <Text size="lg">
-                        <strong>{user.objectives.length}</strong> active objectives
+                        <strong className='keyword'>{user.objectives.length}</strong> active objectives
                     </Text>
                     <Text size="lg">
-                        <strong>{totalContributionCount}</strong> contributions made
+                        <strong className='keyword'>{totalContributionCount}</strong> contributions made
                     </Text>
                     <Text size="lg">
-                        <strong>${totalCurrentAmount}</strong> saved in total
+                        <strong className='keyword'>${totalCurrentAmount}</strong> saved in total
                     </Text>
                     <Text size="lg">
-                        <strong>${totalGoalAmount}</strong> to be saved
+                        <strong className='keyword'>${totalGoalAmount}</strong> to be saved
                     </Text>
                     <Text size="lg">
                         Overall Progress <strong>{overallProgressPercent}%</strong>
-                        <Progress value={overallProgressPercent} color={'blue'} size="xl" animate style={{ marginTop: "15px", marginLeft: "10%", width: '80%', height: 16 }} />
+                        <Progress value={overallProgressPercent} color={getColor()} size="xl" animate style={{ marginTop: "15px", marginLeft: "10%", width: '80%', height: 16 }} />
                     </Text>
                 </Container>
                 <Divider size="md" />
                 <Container px={0} style={{ paddingTop: "10px", textAlign: "center" }}>
-                    <Title order={4} align={'center'}>
-                        <u>ACHIEVEMENT</u>
+                    <Title order={4} align={'center'} className="subtitle">
+                        ACHIEVEMENT
                     </Title>
                     <Text size="lg">
                         Most contribution (#) in 1 day
                         <br />
-                        <strong>
+                        <strong className='keyword'>
                             {longestStreakDayData[1]} on {longestStreakDayData[0]}
                         </strong>
                     </Text>
                     <Text size="lg">
                         Most contribution ($) in 1 day
                         <br />
-                        <strong>
+                        <strong className='keyword'>
                             ${mostDayContributionData[1]} on {mostDayContributionData[0]}
                         </strong>
                     </Text>
                     <Text size="lg">
                         Largest contribution
                         <br />
-                        <strong>
+                        <strong className='keyword'>
                             {largestContribution}
                         </strong>
                     </Text>

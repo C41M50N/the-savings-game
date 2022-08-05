@@ -4,11 +4,12 @@ import { ActionIcon, Card, Group, Menu, Title, Image, Progress, Text, DefaultMan
 import { Objective } from '../types'
 import { IconDots, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons'
 import { clamp } from '../utils'
+import '../app.css'
 
 type Props = {
 	objective: Objective,
 	addContribution: (id: number, amount: number) => void
-	deleteObjective: (id: number) => void
+	deleteObjective: (id: number, title: string) => void
 }
 
 const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) => {
@@ -36,7 +37,7 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 			<Card withBorder shadow={'lg'} radius={'sm'}>
 				<Card.Section>
 					<Group position='apart'>
-						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6 }}>{objective.title}</Title>
+						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6 }} className='keyword'>{objective.title}</Title>
 
 						<Menu withinPortal position="right-start" shadow="md">
 							<Menu.Target>
@@ -158,7 +159,7 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 						</Button>
 					</Grid.Col>
 					<Grid.Col span={2}>
-						<Button color="red" variant="outline" onClick={() => { deleteObjective(objective.id); setDeleteModalOpen(false); }}>
+						<Button color="red" variant="outline" onClick={() => { deleteObjective(objective.id, objective.title); setDeleteModalOpen(false); }}>
 							Yes
 						</Button>
 					</Grid.Col>

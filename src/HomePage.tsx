@@ -29,9 +29,13 @@ function HomePage() {
     )
   }, [])
 
-  const deleteObjective = React.useCallback((id: number) => {
-    const newObjectives = allObjectives.filter(objective => objective.id != id);
-    setAllObjectives(newObjectives);
+  const deleteObjective = React.useCallback((id: number, title: string) => {
+    setAllObjectives(
+      produce(allObjectives, draft => {
+        const index = draft.findIndex(item => item.id === id && item.title === title)
+        if (index !== -1) draft.splice(index, 1)
+      })
+    );
   }, [])
 
   const [searchTerm, setSearchTerm] = React.useState<string>("");
@@ -54,7 +58,7 @@ function HomePage() {
                   style={{ marginRight: 20 }}
                 />
 
-                <Title>The Savings Game</Title>
+                <Title className='title'>The Savings Game</Title>
 
                 <div style={{ flex: 1, marginInline: 20, marginLeft: 56 }}>
                   <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
@@ -89,7 +93,7 @@ function HomePage() {
           <Group spacing={"xs"} style={{ width: '100%' }}>
             {/* SAVINGS OBJECTIVES VIEWPORT */}
             <Container style={{ height: '88vh', width: '70%' }}>
-              <Title order={2}>Savings Objectives</Title>
+              <Title order={2} className='subtitle'>Savings Objectives</Title>
               <Divider />
 
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
