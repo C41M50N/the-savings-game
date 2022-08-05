@@ -107,7 +107,7 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Profile user={mockUser} />
+              <Profile user={mockUser}/>
               <br />
               <SocialFeed feedEntryList={mockFeed} />
             </Container>

@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Title, Text, Grid, Stack, Button, Collapse, Avatar, Divider, Progress } from '@mantine/core'
 import { CaretLeft, CaretDown, UserCircle } from 'tabler-icons-react'
-import { User } from '../types'
+import { User, Objective } from '../types'
 import '../app.css'
 
 type Props = {
@@ -10,13 +10,14 @@ type Props = {
 }
 
 const Profile = ({ user }: Props) => {
+    const [objectives, setObjectives] = useState(user.objectives);
     const [opened, setOpened] = useState(true);
-    const totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
-    const totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
-    const overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
-    const totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
+    var totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
+    var totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
+    var overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
+    var totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
     
-    const achievementData = computeAchievementData();
+    const [achievementData, setAchievementData] = useState(computeAchievementData());
     const longestStreakDayData = [achievementData.streakDate, achievementData.streakLength];
     const largestContribution = achievementData.maxContribution;
     const mostDayContributionData = [achievementData.maxContributionDate, achievementData.maxDayContribution];
@@ -78,6 +79,15 @@ const Profile = ({ user }: Props) => {
             return "yellow";
         }
     }
+
+    useEffect(() => {
+        console.log(overallProgressPercent);
+        setAchievementData(computeAchievementData);
+        totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
+        totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
+        overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
+        totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
+    }, [...objectives.map(objective => objective.contributions.length)])
 
     return (
         <Container>
