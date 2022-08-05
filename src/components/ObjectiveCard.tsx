@@ -53,7 +53,7 @@ const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) =
 			<Card withBorder shadow={'lg'} radius={'sm'}>
 				<Card.Section>
 					<Group position='apart'>
-						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6, maxWidth: '81%' }} className='keyword'>{objective.title}</Title>
+						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6, maxWidth: '81%' }}>{objective.title}</Title>
 
 						<Menu withinPortal position="right-start" shadow="md">
 							<Menu.Target>
