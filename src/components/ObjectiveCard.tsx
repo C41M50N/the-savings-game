@@ -33,7 +33,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 			<Card withBorder shadow={'lg'} radius={'sm'}>
 				<Card.Section>
 					<Group position='apart'>
-						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6 }}>{objective.title}</Title>
+						<Title order={3} style={{ paddingLeft: 10, paddingTop: 6, maxWidth: '81%' }}>{objective.title}</Title>
 
 						<Menu withinPortal position="right-start" shadow="md">
 							<Menu.Target>
@@ -63,7 +63,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 						}
 						{
 							(progressPercentage < 90.0 && progressPercentage >= 40.0) &&
-							<ProgressBar value={progressPercentage} color={"blue"} />
+							<ProgressBar value={progressPercentage} color={"orange"} />
 						}
 						{
 							(progressPercentage < 100.0 && progressPercentage >= 90.0) &&
@@ -132,7 +132,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 						<Button onClick={() => {
 							addContribution(objective.id, contributionAmount);
 							setModalIsOpen(false);
-
+							// TODO: Check milestones, send notifications and add to social feed if necessary
 						}} variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
 					</Container>
 

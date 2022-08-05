@@ -1,12 +1,15 @@
 
 import React from 'react'
-import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
+import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack, Button } from '@mantine/core'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
 import Profile from './components/Profile';
 import { mockFeed, mockObjectives, mockUser } from './data';
 import produce from 'immer';
+import { IconPlus } from '@tabler/icons';
+import NewObjectiveModal from './components/NewObjectiveModal';
+import { Objective } from './types';
 
 function HomePage() {
 
@@ -29,10 +32,35 @@ function HomePage() {
     )
   }, [])
 
+  const addObjective = React.useCallback (({ title, image, currentAmount, goalAmount }: Omit<Objective, "id" | "contributions">) => {
+    setAllObjectives(
+      produce((draft) => {
+        const maxId = draft.sort((o1, o2) => o2.id - o1.id)[0].id
+        const objective: Objective = {
+          id: maxId + 1,
+          title: title,
+          image: image,
+          currentAmount: currentAmount,
+          goalAmount: goalAmount,
+          contributions: [
+            {
+              amount: currentAmount,
+              timestamp: new Date()
+            }
+          ]
+        }
+
+        draft.push(objective)
+      })
+    )
+  }, [])
+
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const searchedObjectives = React.useMemo(() => {
     return allObjectives.filter((objective) => objective.title.toLowerCase().includes(searchTerm.toLowerCase()))
   }, [allObjectives, searchTerm])
+
+  const [addObjectiveModalIsOpen, setAddObjectiveModalIsOpen] = React.useState(false);
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -45,14 +73,18 @@ function HomePage() {
                 <BuildingBank
                   size={50}
                   strokeWidth={1.5}
-                  color={'#2d863a'}
+                  color={'#308bff'}
                   style={{ marginRight: 20 }}
                 />
 
                 <Title>The Savings Game</Title>
 
-                <div style={{ flex: 1, marginInline: 20, marginLeft: 56 }}>
+                <div style={{ marginInline: 20, marginLeft: 56 }}>
                   <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  <Button onClick={() => setAddObjectiveModalIsOpen(true)} variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} leftIcon={<IconPlus />}>Add Objective</Button>
                 </div>
 
                 <div style={{ marginInline: 20 }}>
@@ -103,6 +135,8 @@ function HomePage() {
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
           </Group>
+
+          <NewObjectiveModal isVisible={addObjectiveModalIsOpen} onClose={() => setAddObjectiveModalIsOpen(false)} addNewObjective={addObjective} />
 
         </AppShell>
       </MantineProvider>

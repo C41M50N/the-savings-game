@@ -80,10 +80,10 @@ const Profile = ({ user }: Props) => {
             </Grid>
             <Collapse in={opened} style={{ border: "2px solid gray", borderRadius: 10, padding: "15px", marginTop: "10px" }}>
                 <Grid style={{ paddingBottom: 15 }}>
-                    <Grid.Col span={3}>
+                    <Grid.Col span={2}>
                         <Avatar radius="xl" src={user.avatar != "" ? user.avatar : null} alt="no image here" />
                     </Grid.Col>
-                    <Grid.Col span={9}>
+                    <Grid.Col span={10}>
                         <Title order={3}>{user.name}</Title>
                     </Grid.Col>
                 </Grid>

@@ -10,7 +10,7 @@ type Objective = {
     title: string
     image: string
     currentAmount: number
-    goalAmount: number,
+    goalAmount: number
     contributions: Contribution[]
 }
 export { type Objective }
