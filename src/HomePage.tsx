@@ -1,10 +1,11 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack, Button } from '@mantine/core'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
 import Profile from './components/Profile';
+import { User } from './types';
 import { mockFeed, mockObjectives, mockUser } from './data';
 import produce from 'immer';
 import { IconPlus } from '@tabler/icons';
@@ -19,8 +20,15 @@ function HomePage() {
   const dark = colorScheme === 'dark';
 
   const [allObjectives, setAllObjectives] = React.useState(mockObjectives);
+  const customMockUser = getMockUser();
 
-  const addContribution = React.useCallback ((id: number, amount: number) => {
+  function getMockUser() {
+    var res: User = mockUser;
+    res.objectives = allObjectives;
+    return res;
+  }
+
+  const addContribution = React.useCallback((id: number, amount: number) => {
     setAllObjectives(
       produce((draft) => {
         const objective = draft.find((objective) => objective.id === id)!;
@@ -33,7 +41,16 @@ function HomePage() {
     )
   }, [])
 
-  const addObjective = React.useCallback (({ title, image, currentAmount, goalAmount }: Omit<Objective, "id" | "contributions">) => {
+  const deleteObjective = React.useCallback((id: number, title: string) => {
+    setAllObjectives(
+      produce(allObjectives, draft => {
+        const index = draft.findIndex(item => item.id === id && item.title === title)
+        if (index !== -1) draft.splice(index, 1)
+      })
+    )
+  }, []);
+
+  const addObjective = React.useCallback(({ title, image, currentAmount, goalAmount }: Omit<Objective, "id" | "contributions">) => {
     setAllObjectives(
       produce((draft) => {
         const maxId = draft.sort((o1, o2) => o2.id - o1.id)[0].id
@@ -67,80 +84,80 @@ function HomePage() {
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme, primaryColor: 'cyan' }} withGlobalStyles withNormalizeCSS>
         <NotificationsProvider limit={1}>
-        <AppShell
-          fixed
-          header={
-            <Header height={80} p="md" dir="horizontal">
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                <BuildingBank
-                  size={50}
-                  strokeWidth={1.5}
-                  color={'#308bff'}
-                  style={{ marginRight: 20 }}
-                />
+          <AppShell
+            fixed
+            header={
+              <Header height={80} p="md" dir="horizontal">
+                <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
+                  <BuildingBank
+                    size={50}
+                    strokeWidth={1.5}
+                    color={'#308bff'}
+                    style={{ marginRight: 20 }}
+                  />
 
-                <Title>The Savings Game</Title>
+                  <Title className='title'>The Savings Game</Title>
 
-                <div style={{ marginInline: 20, marginLeft: 56 }}>
-                  <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                  <div style={{ marginInline: 20, marginLeft: 56 }}>
+                    <Input icon={<Search />} value={searchTerm} onChange={(e: any) => setSearchTerm(e.target.value as string)} placeholder="Search Objectives" style={{ maxWidth: 300 }} />
+                  </div>
+
+                  <div style={{ flex: 1 }}>
+                    <Button onClick={() => setAddObjectiveModalIsOpen(true)} variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} leftIcon={<IconPlus />}>Add Objective</Button>
+                  </div>
+
+                  <div style={{ marginInline: 20 }}>
+                    <ActionIcon>
+                      <Avatar size={42} src={customMockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
+                    </ActionIcon>
+                  </div>
+
+                  <div style={{ marginInline: 10 }}>
+                    <ActionIcon
+                      variant="outline"
+                      color={dark ? 'yellow' : 'blue'}
+                      onClick={() => toggleColorScheme()}
+                      title="Toggle color scheme"
+                      style={{ marginRight: 10 }}
+                    >
+                      {dark ? <Sun size={18} /> : <MoonStars size={18} />}
+                    </ActionIcon>
+                  </div>
                 </div>
+              </Header>
+            }
+            style={{ height: "100vh" }}
+            styles={(theme) => ({
+              main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
+            })}
+          >
 
-                <div style={{ flex: 1 }}>
-                  <Button onClick={() => setAddObjectiveModalIsOpen(true)} variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} leftIcon={<IconPlus />}>Add Objective</Button>
-                </div>
+            <Group spacing={"xs"} style={{ width: '100%' }}>
+              {/* SAVINGS OBJECTIVES VIEWPORT */}
+              <Container style={{ height: '88vh', width: '70%' }}>
+                <Title order={2} className='subtitle'>Savings Objectives</Title>
+                <Divider />
 
-                <div style={{ marginInline: 20 }}>
-                  <ActionIcon>
-                    <Avatar size={42} src={mockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
-                  </ActionIcon>
-                </div>
+                <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
+                  {
+                    [...searchedObjectives].map((objective) => (
+                      <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} deleteObjective={deleteObjective} />
+                    ))
+                  }
+                </SimpleGrid>
+              </Container>
 
-                <div style={{ marginInline: 10 }}>
-                  <ActionIcon
-                    variant="outline"
-                    color={dark ? 'yellow' : 'blue'}
-                    onClick={() => toggleColorScheme()}
-                    title="Toggle color scheme"
-                    style={{ marginRight: 10 }}
-                  >
-                    {dark ? <Sun size={18} /> : <MoonStars size={18} />}
-                  </ActionIcon>
-                </div>
-              </div>
-            </Header>
-          }
-          style={{ height: "100vh" }}
-          styles={(theme) => ({
-            main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] }
-          })}
-        >
+              {/* FEED VIEWPORT */}
+              <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
+                <Profile user={customMockUser} />
+                <br />
+                <SocialFeed feedEntryList={mockFeed} />
+              </Container>
+            </Group>
 
-          <Group spacing={"xs"} style={{ width: '100%' }}>
-            {/* SAVINGS OBJECTIVES VIEWPORT */}
-            <Container style={{ height: '88vh', width: '70%' }}>
-              <Title order={2}>Savings Objectives</Title>
-              <Divider />
+            <NewObjectiveModal isVisible={addObjectiveModalIsOpen} onClose={() => setAddObjectiveModalIsOpen(false)} addNewObjective={addObjective} />
 
-              <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
-                {
-                  [...searchedObjectives].map((objective) => (
-                    <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} />
-                  ))
-                }
-              </SimpleGrid>
-            </Container>
-
-            {/* FEED VIEWPORT */}
-            <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Profile user={mockUser} />
-              <br />
-              <SocialFeed feedEntryList={mockFeed} />
-            </Container>
-          </Group>
-
-          <NewObjectiveModal isVisible={addObjectiveModalIsOpen} onClose={() => setAddObjectiveModalIsOpen(false)} addNewObjective={addObjective} />
-
-        </AppShell>
+          </AppShell>
         </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>

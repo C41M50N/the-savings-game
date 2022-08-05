@@ -4,6 +4,7 @@ import { Container, Title, Text, Grid, Stack, Button, Collapse } from '@mantine/
 import { CaretLeft, CaretDown } from 'tabler-icons-react'
 import FeedItem from './FeedItem';
 import { FeedEntry } from '../types'
+import '../app.css'
 
 type Props = {
 	feedEntryList: FeedEntry[]
@@ -16,7 +17,7 @@ const SocialFeed = ({ feedEntryList }: Props) => {
 		<Container>
 			<Grid>
 				<Grid.Col span={9}>
-					<Title order={2}>Social Feed</Title>
+					<Title order={2} className='title'>Social Feed</Title>
 				</Grid.Col>
 				<Grid.Col span={3}>
 					<Button variant='default' onClick={() => setOpened((o) => !o)}>
