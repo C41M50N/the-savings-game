@@ -7,21 +7,33 @@ import '../app.css'
 
 type Props = {
 	user: User
-    addedObjectiveCount: number
 }
 
-const Profile = ({ user, addedObjectiveCount }: Props) => {
-    const [objectives, setObjectives] = useState(addedObjectiveCount);
+const Profile = ({ user }: Props) => {
     const [opened, setOpened] = useState(true);
-    var totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
-    var totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
-    var overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
-    var totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
+    const [totalCurrentAmount, setTotalCurrentAmount] = useState(0);
+    const [totalGoalAmount, setTotalGoalAmount] = useState(0);
+    const [overallProgressPercent, setOverallProgressPercent] = useState(0);
+    const [totalContributionCount, setTotalContributionCount] = useState(0);
     
     const [achievementData, setAchievementData] = useState(computeAchievementData());
     const longestStreakDayData = [achievementData.streakDate, achievementData.streakLength];
     const largestContribution = achievementData.maxContribution;
     const mostDayContributionData = [achievementData.maxContributionDate, achievementData.maxDayContribution];
+
+    function redefineFields() {
+        var totalCurrentAmt = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
+        setTotalCurrentAmount(totalCurrentAmt);
+        var totalGoalAmt = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
+        setTotalGoalAmount(totalGoalAmt);
+        setOverallProgressPercent(Number.parseFloat((totalCurrentAmt / totalGoalAmt * 100).toFixed(0)));
+        setTotalContributionCount(user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0));
+    }
+
+    useEffect(() => {
+        redefineFields();
+        // console.log(totalCurrentAmount);
+    }, []);
 
     function computeAchievementData() {
         var map = new Map();
@@ -82,13 +94,9 @@ const Profile = ({ user, addedObjectiveCount }: Props) => {
     }
 
     useEffect(() => {
-        console.log(overallProgressPercent);
         setAchievementData(computeAchievementData);
-        totalCurrentAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.currentAmount, 0);
-        totalGoalAmount = user.objectives.reduce((total, currentValue) => total = total + currentValue.goalAmount, 0);
-        overallProgressPercent = Number.parseFloat((totalCurrentAmount / totalGoalAmount * 100).toFixed(0));
-        totalContributionCount = user.objectives.reduce((total, currentValue) => total = total + currentValue.contributions.length, 0);
-    }, [objectives])
+        redefineFields();
+    }, [...user.objectives.map(objective => objective.contributions.length)])
 
     return (
         <Container>
@@ -126,7 +134,7 @@ const Profile = ({ user, addedObjectiveCount }: Props) => {
                         <strong className='keyword'>${totalCurrentAmount}</strong> saved in total
                     </Text>
                     <Text size="lg">
-                        <strong className='keyword'>${totalGoalAmount}</strong> to be saved
+                        <strong className='keyword'>${totalGoalAmount - totalCurrentAmount}</strong> to be saved
                     </Text>
                     <Text size="lg">
                         Overall Progress <strong>{overallProgressPercent}%</strong>

@@ -5,6 +5,7 @@ import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react
 import ObjectiveCard from './components/ObjectiveCard';
 import SocialFeed from './components/SocialFeed';
 import Profile from './components/Profile';
+import { User } from './types';
 import { mockFeed, mockObjectives, mockUser } from './data';
 import produce from 'immer';
 
@@ -15,10 +16,15 @@ function HomePage() {
   const dark = colorScheme === 'dark';
 
   const [allObjectives, setAllObjectives] = React.useState(mockObjectives);
-  const [addedObjectiveCount, setAddedObjectiveCount] = useState(0);
+  const customMockUser = getMockUser();
+
+  function getMockUser() {
+    var res: User = mockUser;
+    res.objectives = allObjectives;
+    return res;
+  }
 
   const addContribution = React.useCallback ((id: number, amount: number) => {
-    setAddedObjectiveCount(addedObjectiveCount + 1);
     setAllObjectives(
       produce((draft) => {
         const objective = draft.find((objective) => objective.id === id)!;
@@ -68,7 +74,7 @@ function HomePage() {
 
                 <div style={{ marginInline: 20 }}>
                   <ActionIcon>
-                    <Avatar size={42} src={mockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
+                    <Avatar size={42} src={customMockUser.avatar} radius="xl" alt="Profile" color={"blue"} />
                   </ActionIcon>
                 </div>
 
@@ -109,7 +115,7 @@ function HomePage() {
 
             {/* FEED VIEWPORT */}
             <Container style={{ height: '88vh', width: '30%', flex: 1 }}>
-              <Profile user={mockUser} addedObjectiveCount={addedObjectiveCount}/>
+              <Profile user={customMockUser} />
               <br />
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
