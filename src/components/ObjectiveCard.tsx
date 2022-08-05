@@ -8,16 +8,19 @@ import { clamp } from '../utils'
 type Props = {
 	objective: Objective,
 	addContribution: (id: number, amount: number) => void
+	deleteObjective: (id: number) => void
 }
 
-const ObjectiveCard = ({ objective, addContribution }: Props) => {
+const ObjectiveCard = ({ objective, addContribution, deleteObjective }: Props) => {
 
 	const progressPercentage = clamp(Number.parseFloat((objective.currentAmount / objective.goalAmount * 100).toFixed(0)), 0.0, 100.0);
 
-	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const [contributeModalOpen, setContributeModalOpen] = useState(false);
 	const [neededContribution, setNeededContribution] = useState(Math.round((objective.goalAmount - objective.currentAmount) * 100) / 100);
 	const [contributionAmount, setContributionAmount] = useState(neededContribution);
 	const [inputWarningOn, setInputWarningOn] = useState(false);
+
+	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
 	function updateAmount(amt: number) {
 		if(amt > 0 && amt <= neededContribution) {
@@ -43,9 +46,9 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 							</Menu.Target>
 
 							<Menu.Dropdown>
-								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => { setModalIsOpen(true); setContributionAmount(contributionAmount); }}>Contribute</Menu.Item>
+								<Menu.Item icon={<IconCirclePlus size={20} />} color="green" onClick={() => { setContributeModalOpen(true); setContributionAmount(contributionAmount); }}>Contribute</Menu.Item>
 								<Menu.Item icon={<IconEdit size={20} />} color="orange">Edit</Menu.Item>
-								<Menu.Item icon={<IconTrash size={20} />} color="red">Delete</Menu.Item>
+								<Menu.Item icon={<IconTrash size={20} />} color="red" onClick={() => { setDeleteModalOpen(true); }}>Delete</Menu.Item>
 							</Menu.Dropdown>
 						</Menu>
 					</Group>
@@ -81,9 +84,9 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 				</Card.Section>
 			</Card>
 
-			<Modal opened={modalIsOpen} size='lg' padding={50}
+			<Modal opened={contributeModalOpen} size='lg' padding={50}
 				onClose={() => {
-					setModalIsOpen(false);
+					setContributeModalOpen(false);
 					setContributionAmount(contributionAmount);
 					setInputWarningOn(false);
 				}}
@@ -131,8 +134,7 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 
 						<Button onClick={() => {
 							addContribution(objective.id, contributionAmount);
-							setModalIsOpen(false);
-
+							setContributeModalOpen(false);
 						}} variant='gradient' gradient={{ from: 'teal', to: 'green', deg: 105 }} style={{ width: '100%', fontSize: 16, marginTop: 12 }} leftIcon={<IconCirclePlus size={20} />}>{`Contribute $ ${contributionAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Button>
 					</Container>
 
@@ -142,6 +144,25 @@ const ObjectiveCard = ({ objective, addContribution }: Props) => {
 						</Blockquote>
 					</Container>
 				</div>
+			</Modal>
+
+			<Modal
+				opened={deleteModalOpen} size='lg' padding={50}
+				onClose={() => setDeleteModalOpen(false)}
+				title={<Text style={{ fontSize: 24 }}>Are you sure you want to delete this objective?</Text>}
+			>
+				<Grid style={{ width: '50%' }}>
+					<Grid.Col span={4}>
+						<Button color="blue" variant="outline">
+							No
+						</Button>
+					</Grid.Col>
+					<Grid.Col span={2}>
+						<Button color="red" variant="outline" onClick={() => { deleteObjective(objective.id); setDeleteModalOpen(false); }}>
+							Yes
+						</Button>
+					</Grid.Col>
+				</Grid>
 			</Modal>
 		</>
 	)

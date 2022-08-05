@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ActionIcon, AppShell, Avatar, Card, ColorScheme, ColorSchemeProvider, Container, Divider, Group, Header, Input, MantineProvider, SimpleGrid, Title, Text, Stack } from '@mantine/core'
 import { BuildingBank, MoonStars, Search, Social, Sun } from 'tabler-icons-react';
 import ObjectiveCard from './components/ObjectiveCard';
@@ -27,6 +27,11 @@ function HomePage() {
         })
       })
     )
+  }, [])
+
+  const deleteObjective = React.useCallback((id: number) => {
+    const newObjectives = allObjectives.filter(objective => objective.id != id);
+    setAllObjectives(newObjectives);
   }, [])
 
   const [searchTerm, setSearchTerm] = React.useState<string>("");
@@ -90,7 +95,7 @@ function HomePage() {
               <SimpleGrid cols={3} spacing="lg" style={{ marginBlock: 12 }}>
                 {
                   [...searchedObjectives].map((objective) => (
-                    <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} />
+                    <ObjectiveCard key={objective.id} objective={objective} addContribution={addContribution} deleteObjective={deleteObjective}/>
                   ))
                 }
               </SimpleGrid>
@@ -103,7 +108,6 @@ function HomePage() {
               <SocialFeed feedEntryList={mockFeed} />
             </Container>
           </Group>
-
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>
