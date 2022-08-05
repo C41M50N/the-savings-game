@@ -10,6 +10,7 @@ import produce from 'immer';
 import { IconPlus } from '@tabler/icons';
 import NewObjectiveModal from './components/NewObjectiveModal';
 import { Objective } from './types';
+import { NotificationsProvider } from '@mantine/notifications';
 
 function HomePage() {
 
@@ -65,6 +66,7 @@ function HomePage() {
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider theme={{ colorScheme, primaryColor: 'cyan' }} withGlobalStyles withNormalizeCSS>
+        <NotificationsProvider limit={1}>
         <AppShell
           fixed
           header={
@@ -139,6 +141,7 @@ function HomePage() {
           <NewObjectiveModal isVisible={addObjectiveModalIsOpen} onClose={() => setAddObjectiveModalIsOpen(false)} addNewObjective={addObjective} />
 
         </AppShell>
+        </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )
